@@ -1,29 +1,22 @@
-// ES6 import/export
+// Import Ember
 import Ember from 'ember';
+
+// Import models
+import Pac from '../models/pac';
+
+// Import mixins
+import SharedStuff from '../mixins/shared-stuff';
+
+// Import addons
 import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component';
 
 // pac-man is an Ember Component
 // Mixin the "KeyboardShortcuts" into this class
-export default Ember.Component.extend(KeyboardShortcuts, {
-	x: 1,
-    y: 2,
-    squareSize: 40,
-    canvasID: "myCanvas",
-    // '0' means space, '1' means block, '2' means space with pellet
-    grids: [
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 2, 2, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 1, 0, 1, 0, 2, 2, 1, 1, 1, 1],
-	  	[0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	],
+export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
+    
+    score: 0,
+    levelNumber: 1,
+    
 	screenHeight: Ember.computed(function() {
 		return this.get('grids').length;
 	}),
@@ -42,43 +35,17 @@ export default Ember.Component.extend(KeyboardShortcuts, {
 	screenPixelHeight: Ember.computed(function() {
 	    return this.get('screenHeight') * this.get('squareSize');
 	}),
-    // Turn ctx into a "computed property", we can use "this.get" to get it like a inner property
-    ctx: Ember.computed(function() {
-	    let canvas = document.getElementById(this.get("canvasID"));
-	    let ctx = canvas.getContext("2d");
-	    return ctx;
-	}),
+    
 	// The lifecycle of a component in emberjs
 	didInsertElement: function() {
+		this.set('pac', Pac.create())
 		// Init function
-		this.drawPac();
-		this.drawGrid();
+		this.loop();
 	},
 
-	drawCircle(x, y, radiusDivisor) {
-	   let ctx = this.get('ctx')
-	   let squareSize = this.get('squareSize');
-
-	   let pixelX = (x + 1/2) * squareSize;
-	   let pixelY = (y + 1/2) * squareSize;
-
-	   ctx.fillStyle = '#000';
-	   ctx.beginPath();
-	   ctx.arc(pixelX, pixelY, squareSize / radiusDivisor, 0, Math.PI * 2, false);
-	   ctx.closePath();
-	   ctx.fill();
-	},
-
-	drawPac() {
-	   let x = this.get('x');
-	   let y = this.get('y');
-	   let radiusDivisor = 2;
-	   this.drawCircle(x, y, radiusDivisor)
-	},
-
-	drawPellet(x, y) {
+	drawPellet: function(x, y) {
 	   let radiusDivisor = 6;
-	   this.drawCircle(x, y, radiusDivisor)
+	   this.drawCircle(x, y, radiusDivisor, 'stopped');
 	},
 
 	drawWalls: function(x, y) {
@@ -115,63 +82,77 @@ export default Ember.Component.extend(KeyboardShortcuts, {
 	    ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'))
 	},
 
-	movePacMan: function(direction, amount) {
-	    this.incrementProperty(direction, amount);
+	loop: function(){
+	  	this.get('pac').move();
 
-	    if(this.collidedWithBorder() || this.collidedWithWall()) {
-	        this.decrementProperty(direction, amount)
-	    }
+	  	this.processAnyPellets();
 
-	    this.processAnyPellets();
-	    this.clearScreen();
-	    // Repaint function
-	    this.drawPac();
-	    this.drawGrid();
+	  	this.clearScreen();
+	  	this.drawGrid();
+	  	this.get('pac').draw();
+
+	  	Ember.run.later(this, this.loop, 1000/60);
 	},
 
 	processAnyPellets: function() {
-	    let x = this.get('x');
-	    let y = this.get('y');
+	    let x = this.get('pac.x');
+	    let y = this.get('pac.y');
 	    let grids = this.get('grids');
 
-	    if(grids[y][x] == 2){
-	 	   grids[y][x] = 0;
+	    if(grids[y][x] == 2) {
+	    	// Increase score
+	    	this.incrementProperty('score');
+	 	    grids[y][x] = 0;
+
+	 	    if(this.levelComplete()) {
+		      this.incrementProperty('levelNumber');
+		      this.restartLevel();
+		    }
 	    }
 	},
-	// Detect if the PAC had been moved out of the board
-	collidedWithBorder: function() {
-	    let x = this.get('x');
-	    let y = this.get('y');
-	    let screenHeight = this.get('screenHeight');
-	    let screenWidth = this.get('screenWidth');
 
-	    let pacOutOfBounds = x < 0 ||
-	                         y < 0 ||
-	                         x >= screenWidth ||
-	                         y >= screenHeight
-	    return pacOutOfBounds;
+	levelComplete: function() {
+		let hasPelletsLeft = false;
+	    let grids = this.get('grids');
+
+	 	grids.forEach(row => {
+	   	  	row.forEach(cell => {
+	      		if(cell == 2) {
+	        		hasPelletsLeft = true
+	     		 }
+	    	});
+	 	});
+
+	  	return !hasPelletsLeft;
 	},
 
-	collidedWithWall: function() {
-	    let x = this.get('x');
-  		let y = this.get('y');
-  		return this.get('grids')[y][x] == 1;
+	restartLevel: function() {
+	    this.set('pac.frameCycle', 0);
+  		this.set('pac.direction', 'stopped');
+
+	    let grids = this.get('grids');
+	    grids.forEach((row, rowIndex) => {
+	        row.forEach((cell, columnIndex) => {
+	     		if(cell == 0){
+	        		grids[rowIndex][columnIndex] = 2
+	      		}
+    		});
+	  	});
 	},
 
   	keyboardShortcuts: {
 	    up: function() {
-	        this.movePacMan('y', -1); 
+	    	this.set('pac.intent', 'up');
 	    },
 	    down: function() {
-	        this.movePacMan('y', 1); 
+	    	this.set('pac.intent', 'down');
 	    },
 	    left: function() {
-	        this.movePacMan('x', -1); 
+	    	this.set('pac.intent', 'left');
 	    },
 	    right: function() {
-	        this.movePacMan('x', 1); 
+	    	this.set('pac.intent', 'right');
 	    }
 	},
-
 
 });
