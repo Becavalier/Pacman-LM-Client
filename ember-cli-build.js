@@ -7,6 +7,12 @@ module.exports = function(defaults) {
     // Add options here
   });
 
+  app.import('vendor/audio.js', {
+    using: [
+      { transformation: 'amd', as: 'audio/buzz' }
+    ]
+  });
+
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //

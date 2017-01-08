@@ -7,9 +7,10 @@ import Level from '../models/level';
 
 // Import mixins
 import SharedStuff from '../mixins/shared-stuff';
-
-// Import addons
 import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component';
+
+// Import libraries
+import Audio from 'audio/buzz';
 
 // pac-man is an Ember Component
 // Mixin "KeyboardShortcuts" addon into this class
@@ -54,18 +55,17 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 	},
 
 	drawGrid: function() {
-	    let squareSize = this.get('level.squareSize');
 	    let ctx = this.get('ctx');
 	    ctx.fillStyle = '#000';
 
 	    let grids = this.get('level.grids');
 	    grids.forEach((grid, gridIndex) => {
 	    	grid.forEach((mapPoint, mapPointIndex) => {
-	    		if(mapPoint == 1) {
+	    		if(mapPoint === 1) {
 	    			this.drawWalls(mapPointIndex, gridIndex);
 	    		}
 
-	    		if(mapPoint == 2) {
+	    		if(mapPoint === 2) {
 	    			this.drawPellet(mapPointIndex, gridIndex);
 	    		}
 	    	});
@@ -94,7 +94,7 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 	    let y = this.get('pac.y');
 	    let grids = this.get('level.grids');
 
-	    if(grids[y][x] == 2) {
+	    if(grids[y][x] === 2) {
 	    	// Increase score
 	    	this.incrementProperty('score');
 	 	    grids[y][x] = 0;

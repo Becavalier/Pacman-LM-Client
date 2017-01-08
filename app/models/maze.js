@@ -82,117 +82,117 @@ export default Ember.Object.extend({
 				let bottomCellVal = 1 - cells[rowIndexInMaze][itemIndexInRow][2];
 				let leftCellVal   = 1 - cells[rowIndexInMaze][itemIndexInRow][3];
 
-				if(rowIndexInMaze == 0 && itemIndexInRow == 0) {
+				if(rowIndexInMaze === 0 && itemIndexInRow === 0) {
 					maps[xIndex][yIndex + 1] = rightCellVal;
 					maps[xIndex + 1][yIndex] = bottomCellVal;
 
-					if(rightCellVal == 1 && bottomCellVal == 1) {
+					if(rightCellVal === 1 && bottomCellVal === 1) {
 						maps[xIndex + 1][yIndex + 1] = 1;
 					}
 				} 
 
-				if(rowIndexInMaze == 0 && itemIndexInRow != 0 && itemIndexInRow != columes - 1) {
+				if(rowIndexInMaze === 0 && itemIndexInRow !== 0 && itemIndexInRow !== columes - 1) {
 					maps[xIndex][yIndex - 1] = leftCellVal;
 					maps[xIndex][yIndex + 1] = rightCellVal;
 					maps[xIndex + 1][yIndex] = bottomCellVal;
 
-					if(rightCellVal == 1 && bottomCellVal == 1) {
+					if(rightCellVal === 1 && bottomCellVal === 1) {
 						maps[xIndex + 1][yIndex + 1] = 1;
 					}
 
-					if(leftCellVal == 1 && bottomCellVal == 1) {
+					if(leftCellVal === 1 && bottomCellVal === 1) {
 						maps[xIndex + 1][yIndex - 1] = 1;
 					}
 				}
 
-				if(rowIndexInMaze == 1 && itemIndexInRow == columes - 1) {
+				if(rowIndexInMaze === 1 && itemIndexInRow === columes - 1) {
 					maps[xIndex][yIndex - 1] = leftCellVal;
 					maps[xIndex + 1][yIndex] = bottomCellVal;
 
-					if(leftCellVal == 1 && bottomCellVal == 1) {
+					if(leftCellVal === 1 && bottomCellVal === 1) {
 						maps[xIndex + 1][yIndex - 1] = 1;
 					}
 				}
 
-				if(rowIndexInMaze != 0 && rowIndexInMaze != rows - 1 && itemIndexInRow == columes - 1) {
+				if(rowIndexInMaze !== 0 && rowIndexInMaze !== rows - 1 && itemIndexInRow === columes - 1) {
 					maps[xIndex - 1][yIndex] = topCellVal;
 					maps[xIndex][yIndex - 1] = leftCellVal;
 					maps[xIndex + 1][yIndex] = bottomCellVal;
 
-					if(leftCellVal == 1 && topCellVal == 1) {
+					if(leftCellVal === 1 && topCellVal === 1) {
 						maps[xIndex - 1][yIndex - 1] = 1;
 					}
 
-					if(leftCellVal == 1 && bottomCellVal == 1) {
+					if(leftCellVal === 1 && bottomCellVal === 1) {
 						maps[xIndex + 1][yIndex - 1] = 1;
 					}
 				}
 
-				if(rowIndexInMaze == rows - 1 && itemIndexInRow == columes - 1) {
+				if(rowIndexInMaze === rows - 1 && itemIndexInRow === columes - 1) {
 					maps[xIndex - 1][yIndex] = topCellVal;
 					maps[xIndex][yIndex - 1] = leftCellVal;
 
-					if(leftCellVal == 1 && topCellVal == 1) {
+					if(leftCellVal === 1 && topCellVal === 1) {
 						maps[xIndex - 1][yIndex - 1] = 1;
 					}
 				}
 
-				if(rowIndexInMaze == rows - 1 && itemIndexInRow != 0 && itemIndexInRow != columes - 1) {
+				if(rowIndexInMaze === rows - 1 && itemIndexInRow !== 0 && itemIndexInRow !== columes - 1) {
 					maps[xIndex - 1][yIndex] = topCellVal;
 					maps[xIndex][yIndex - 1] = leftCellVal;
 					maps[xIndex][yIndex + 1] = rightCellVal;
 
-					if(leftCellVal == 1 && topCellVal == 1) {
+					if(leftCellVal === 1 && topCellVal === 1) {
 						maps[xIndex - 1][yIndex - 1] = 1;
 					}
 
-					if(rightCellVal == 1 && topCellVal == 1) {
+					if(rightCellVal === 1 && topCellVal === 1) {
 						maps[xIndex - 1][yIndex + 1] = 1;
 					}
 				}
 
-				if(rowIndexInMaze == rows - 1 && itemIndexInRow == 0) {
+				if(rowIndexInMaze === rows - 1 && itemIndexInRow === 0) {
 					maps[xIndex - 1][yIndex] = topCellVal;
 					maps[xIndex][yIndex + 1] = rightCellVal;
 
-					if(rightCellVal == 1 && topCellVal == 1) {
+					if(rightCellVal === 1 && topCellVal === 1) {
 						maps[xIndex - 1][yIndex + 1] = 1;
 					}
 				}
 
-				if(rowIndexInMaze != 0 && rowIndexInMaze != rows - 1 && itemIndexInRow == 0) {
+				if(rowIndexInMaze !== 0 && rowIndexInMaze !== rows - 1 && itemIndexInRow === 0) {
 					maps[xIndex - 1][yIndex] = topCellVal;
 					maps[xIndex][yIndex + 1] = rightCellVal;
 					maps[xIndex + 1][yIndex] = bottomCellVal;
 
-					if(rightCellVal == 1 && topCellVal == 1) {
+					if(rightCellVal === 1 && topCellVal === 1) {
 						maps[xIndex - 1][yIndex + 1] = 1;
 					}
 
-					if(rightCellVal == 1 && bottomCellVal == 1) {
+					if(rightCellVal === 1 && bottomCellVal === 1) {
 						maps[xIndex + 1][yIndex + 1] = 1;
 					}
 				}
 
-				if(rowIndexInMaze != 0 && rowIndexInMaze != rows - 1 && itemIndexInRow != 0 && itemIndexInRow != columes - 1) {
+				if(rowIndexInMaze !== 0 && rowIndexInMaze !== rows - 1 && itemIndexInRow !== 0 && itemIndexInRow !== columes - 1) {
 					maps[xIndex - 1][yIndex] = topCellVal; 
 					maps[xIndex][yIndex + 1] = rightCellVal;
 					maps[xIndex + 1][yIndex] = bottomCellVal;
 					maps[xIndex][yIndex - 1] = leftCellVal;
 
-					if(rightCellVal == 1 && topCellVal == 1) {
+					if(rightCellVal === 1 && topCellVal === 1) {
 						maps[xIndex - 1][yIndex + 1] = 1;
 					}
 
-					if(rightCellVal == 1 && bottomCellVal == 1) {
+					if(rightCellVal === 1 && bottomCellVal === 1) {
 						maps[xIndex + 1][yIndex + 1] = 1;
 					}
 
-					if(leftCellVal == 1 && topCellVal == 1) {
+					if(leftCellVal === 1 && topCellVal === 1) {
 						maps[xIndex - 1][yIndex - 1] = 1;
 					}
 
-					if(leftCellVal == 1 && bottomCellVal == 1) {
+					if(leftCellVal === 1 && bottomCellVal === 1) {
 						maps[xIndex + 1][yIndex - 1] = 1;
 					}
 				}
@@ -205,7 +205,7 @@ export default Ember.Object.extend({
 		// Repaint the rest area
 		for(let i = 0; i < maps.length; i++) {
 			for(let j = 0; j < maps[i].length; j++) {
-				if(maps[i][j] == 2)
+				if(maps[i][j] === 2)
 					maps[i][j] = 1;
 			}
 		} 
