@@ -4,23 +4,7 @@ export default Ember.Mixin.create({
 	canvasID: "myCanvas",
 	// Set animation frames
     frameCycle: 1,
-	framesPerMovement: 10,
-	// '0' means space, '1' means block, '2' means space with pellet
-    grids: [
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 2, 2, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 1, 0, 1, 0, 2, 2, 1, 1, 1, 1],
-	  	[0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	  	[1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-	],
-	squareSize: 40,
+	framesPerMovement: 12,
 	directions: {
 	    'up': {
 	    	x: 0, 
@@ -50,9 +34,8 @@ export default Ember.Mixin.create({
 	    return ctx;
 	}),
 
-	drawCircle: function(x, y, radiusDivisor, direction) {
+	drawCircle: function(x, y, squareSize, radiusDivisor, direction) {
 	    let ctx = this.get('ctx')
-	    let squareSize = this.get('squareSize');
 
 	  	let pixelX = (x + 1/2 + this.offsetFor('x', direction)) * squareSize;
 	  	let pixelY = (y + 1/2 + this.offsetFor('y', direction)) * squareSize;

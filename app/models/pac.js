@@ -3,21 +3,21 @@ import Ember from 'ember';
 import SharedStuff from '../mixins/shared-stuff';
 
 export default Ember.Object.extend(SharedStuff, {
-	x: 1,
-    y: 2,
+	x: 0,
+    y: 0,
     direction: 'stopped',
-    intent: 'down',
+    intent: 'stopped',
 
     draw: function() {
 	   let x = this.get('x');
 	   let y = this.get('y');
 	   let radiusDivisor = 2;
-	   this.drawCircle(x, y, radiusDivisor, this.get('direction'));
+	   this.drawCircle(x, y, this.get('squareSize'), radiusDivisor, this.get('direction'));
 	},
 
 	changeDirection: function() {
 		let intent = this.get('intent');
-	    if(this.pathBlockedInDirection(intent)){
+	    if(this.pathBlockedInDirection(intent)) {
 	      	this.set('direction', 'stopped');
 	    } else {
 	      	this.set('direction', intent);
@@ -64,5 +64,10 @@ export default Ember.Object.extend(SharedStuff, {
 
 	  	this.set('frameCycle', 1);
 	},
+
+	restart: function() {
+		this.set('frameCycle', 0);
+  		this.set('direction', 'stopped');
+	}
 
 });

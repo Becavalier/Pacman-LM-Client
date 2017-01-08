@@ -1,8 +1,8 @@
-# Pacman Game
+# Pacmac - Lost in Maze
 
-This README outlines the details of collaborating on this Ember application.
+A browser game written in javascript with framework ember.js.
 
-A pacman game written in javascript with framework ember.js.
+
 
 ## Prerequisites
 
