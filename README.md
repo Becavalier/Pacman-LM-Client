@@ -1,5 +1,7 @@
 # Pacmac - Lost in Maze
 
+[![Build Status](https://travis-ci.org/Becavalier/Pacman-Lost-in-Maze.svg?branch=master)](https://travis-ci.org/Becavalier/Pacman-Lost-in-Maze)
+
 A browser game written in javascript with framework ember.js.
 
 

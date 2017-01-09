@@ -39,7 +39,7 @@ export default Ember.Object.extend(SharedStuff, Movement, {
 	},
 
 	getRandomItem: function(list, weight) {
-	  	var totalWeight = weight.reduce(function (prev, cur, i, arr) {
+	  	var totalWeight = weight.reduce(function (prev, cur) {
 	      	return prev + cur;
 	  	});
 
