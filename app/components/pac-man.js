@@ -4,6 +4,7 @@ import Ember from 'ember';
 // Import models
 import Pac from '../models/pac';
 import Level from '../models/level';
+import Ghost from '../models/ghost';
 
 // Import mixins
 import SharedStuff from '../mixins/shared-stuff';
@@ -31,6 +32,13 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 
 		this.set('screenPixelWidth', this.get('level.screenPixelWidth'));
 		this.set('screenPixelHeight', this.get('level.screenPixelHeight'));
+
+		this.set('ghost', Ghost.create({
+			x: 10,
+			y: 10,
+			squareSize: this.get('level.squareSize'),
+			pac: this.get('pac')
+		}));
     },
 
 	// The lifecycle of a component in emberjs
@@ -79,12 +87,14 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 
 	loop: function() {
 	  	this.get('pac').move();
+	  	this.get('ghost').move();
 
 	  	this.processAnyPellets();
 
 	  	this.clearScreen();
 	  	this.drawGrid();
 	  	this.get('pac').draw();
+	  	this.get('ghost').draw();
 
 	  	Ember.run.later(this, this.loop, 1000/60);
 	},

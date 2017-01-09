@@ -34,13 +34,13 @@ export default Ember.Mixin.create({
 	    return ctx;
 	}),
 
-	drawCircle: function(x, y, squareSize, radiusDivisor, direction) {
+	drawCircle: function(x, y, squareSize, radiusDivisor, direction, color = '#000') {
 	    let ctx = this.get('ctx')
 
 	  	let pixelX = (x + 1/2 + this.offsetFor('x', direction)) * squareSize;
 	  	let pixelY = (y + 1/2 + this.offsetFor('y', direction)) * squareSize;
 
-	  	ctx.fillStyle = '#000';
+	  	ctx.fillStyle = color;
 	  	ctx.beginPath();
 	  	ctx.arc(pixelX, pixelY, squareSize/radiusDivisor, 0, Math.PI * 2, false);
 	  	ctx.closePath();
