@@ -19,7 +19,7 @@ export default Ember.Object.extend(SharedStuff, Movement, {
 	},
 
 	changeDirection: function() {
-		let directions = ['left', 'right', 'up', 'down']
+		let directions = ['left', 'right', 'up', 'down'];
 	  	let directionWeights = directions.map(direction => {
 	    	return this.chanceOfPacmanIfInDirection(direction);
 	  	});
