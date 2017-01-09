@@ -28,7 +28,7 @@ export default Ember.Mixin.create({
 	  	if(this.animationCompleted()) {
 	    	this.finalizeMove();
 	    	this.changeDirection();
-	  	} else if(this.get('direction') == 'stopped') {
+	  	} else if(this.get('direction') === 'stopped') {
 	    	this.changeDirection();
 	  	} else {
 	    	this.incrementProperty('frameCycle');
@@ -36,7 +36,7 @@ export default Ember.Mixin.create({
 	},
 
 	animationCompleted: function() {
-	  	return this.get('frameCycle') == this.get('framesPerMovement');
+	  	return this.get('frameCycle') === this.get('framesPerMovement');
 	},
 
 	finalizeMove: function() {

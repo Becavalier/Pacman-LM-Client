@@ -7,9 +7,15 @@ module.exports = function(defaults) {
     // Add options here
   });
 
-  app.import('vendor/audio.js', {
+  app.import('vendor/buzz.js', {
     using: [
       { transformation: 'amd', as: 'audio/buzz' }
+    ]
+  });
+
+  app.import(app.bowerDirectory + '/localforage/dist/localforage.min.js', {
+    using: [
+      { transformation: 'amd', as: 'storage/localforage' }
     ]
   });
 

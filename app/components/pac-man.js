@@ -13,29 +13,33 @@ import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component';
 // Import libraries
 import Audio from 'audio/buzz';
 
-// pac-man is an Ember Component
 // Mixin "KeyboardShortcuts" addon into this class
 export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
-    
-    score: 0,
-    levelNumber: 1,
-    
+
+	scoreboard: {
+		score: 0,
+		levelNumber: 1
+	},
+
     init: function() {
     	this._super();
     	this.set('level', Level.create());
     	this.get('level').initGrids();
 
     	this.set('pac', Pac.create({
-		  	grids: this.get('level.grids'),
-		  	squareSize: this.get('level.squareSize')
+    		x: 0,
+    		y: 0,
+		  	level: this.get('level'),
+		  	scoreboard: this.get('scoreboard')
 		}));
 
+    	// Variables used by view
 		this.set('screenPixelWidth', this.get('level.screenPixelWidth'));
 		this.set('screenPixelHeight', this.get('level.screenPixelHeight'));
 
 		this.set('ghost', Ghost.create({
-			x: 10,
-			y: 10,
+			x: 0,
+			y: 0,
 			squareSize: this.get('level.squareSize'),
 			pac: this.get('pac')
 		}));
@@ -47,73 +51,21 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 		this.loop();
 	},
 
-	drawPellet: function(x, y) {
-	   let radiusDivisor = 6;
-	   this.drawCircle(x, y, this.get('level.squareSize'), radiusDivisor, 'stopped');
-	},
-
-	drawWalls: function(x, y) {
-	    let squareSize = this.get('level.squareSize');
-	    let ctx = this.get('ctx');
-	    ctx.fillStyle = '#000';
-		ctx.fillRect(x * squareSize,
-                 	 y * squareSize,
-                     squareSize,
-                     squareSize);
-	},
-
-	drawGrid: function() {
-	    let ctx = this.get('ctx');
-	    ctx.fillStyle = '#000';
-
-	    let grids = this.get('level.grids');
-	    grids.forEach((grid, gridIndex) => {
-	    	grid.forEach((mapPoint, mapPointIndex) => {
-	    		if(mapPoint === 1) {
-	    			this.drawWalls(mapPointIndex, gridIndex);
-	    		}
-
-	    		if(mapPoint === 2) {
-	    			this.drawPellet(mapPointIndex, gridIndex);
-	    		}
-	    	});
-	    });
-	},
-
-	clearScreen: function() {
-	    let ctx = this.get('ctx');
-	    ctx.clearRect(0, 0, this.get('level.screenPixelWidth'), this.get('level.screenPixelHeight'));
-	},
-
 	loop: function() {
 	  	this.get('pac').move();
 	  	this.get('ghost').move();
 
-	  	this.processAnyPellets();
+	  	// Main logic
+	  	this.get('pac').processAnyPellets(() => {
+	  		this.restart();
+	  	});
 
-	  	this.clearScreen();
-	  	this.drawGrid();
+	  	this.get('level').clearScreen();
+	  	this.get('level').drawGrid();
 	  	this.get('pac').draw();
 	  	this.get('ghost').draw();
 
 	  	Ember.run.later(this, this.loop, 1000/60);
-	},
-
-	processAnyPellets: function() {
-	    let x = this.get('pac.x');
-	    let y = this.get('pac.y');
-	    let grids = this.get('level.grids');
-
-	    if(grids[y][x] === 2) {
-	    	// Increase score
-	    	this.incrementProperty('score');
-	 	    grids[y][x] = 0;
-
-	 	    if(this.get('level').isComplete()) {
-		      this.incrementProperty('levelNumber');
-		      this.restart();
-		    }
-	    }
 	},
 
 	restart: function() {

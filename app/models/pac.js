@@ -9,6 +9,14 @@ export default Ember.Object.extend(SharedStuff, Movement, {
     direction: 'stopped',
     intent: 'stopped',
 
+    init: function() {
+    	// Variables
+		this.set('grids', this.get('level.grids'));
+		this.set('squareSize', this.get('level.squareSize'));
+		// Methods
+		this.set('isComplete', this.get('level.isComplete'));
+	},
+
     draw: function() {
 	   let x = this.get('x');
 	   let y = this.get('y');
@@ -22,6 +30,25 @@ export default Ember.Object.extend(SharedStuff, Movement, {
 	      	this.set('direction', 'stopped');
 	    } else {
 	      	this.set('direction', intent);
+	    }
+	},
+
+	processAnyPellets: function(roundOverCallback) {
+	    let x = this.get('x');
+	    let y = this.get('y');
+	    let grids = this.get('grids');
+
+	    if(grids[y][x] === 2) {
+	    	// Increase score
+	    	this.incrementProperty('scoreboard.score');
+	 	    grids[y][x] = 0;
+
+	 	    if(this.isComplete()) {
+		      	this.incrementProperty('scoreboard.levelNumber');
+		      	this.set('intent', 'stopped');
+
+		      	roundOverCallback && roundOverCallback();
+		    }
 	    }
 	},
 
