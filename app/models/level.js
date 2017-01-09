@@ -85,7 +85,7 @@ export default Ember.Object.extend(SharedStuff, {
 
 	drawPellet: function(x, y) {
 	   let radiusDivisor = 6;
-	   this.drawCircle(x, y, this.get('squareSize'), radiusDivisor, 'stopped');
+	   this.drawCircle(x, y, this.get('squareSize'), radiusDivisor, 'stopped', '#616161');
 	},
 
 	drawWalls: function(x, y) {

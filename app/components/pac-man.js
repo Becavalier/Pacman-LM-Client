@@ -10,12 +10,10 @@ import Ghost from '../models/ghost';
 import SharedStuff from '../mixins/shared-stuff';
 import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component';
 
-// Import libraries
-import Audio from 'audio/buzz';
-
 // Mixin "KeyboardShortcuts" addon into this class
 export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 
+	defaultMazeScale: 10,
 	scoreboard: {
 		score: 0,
 		levelNumber: 1
@@ -24,7 +22,7 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
     init: function() {
     	this._super();
     	this.set('level', Level.create({
-    		mazeScale: 10
+    		mazeScale: this.get('defaultMazeScale')
     	}));
     	this.get('level').initGrids();
 
@@ -40,8 +38,9 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 		this.set('screenPixelHeight', this.get('level.screenPixelHeight'));
 
 		this.set('ghost', Ghost.create({
-			x: 0,
-			y: 0,
+			x: 2 * (this.get('defaultMazeScale') - 1),
+			y: 2 * (this.get('defaultMazeScale') - 1),
+			level: this.get('level'),
 			squareSize: this.get('level.squareSize'),
 			pac: this.get('pac')
 		}));

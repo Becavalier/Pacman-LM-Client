@@ -9,7 +9,8 @@ export default Ember.Object.extend(SharedStuff, Movement, {
     y: 0,
     direction: 'stopped',
     intent: 'stopped',
-
+    // The movement speed of ghost
+    framesPerMovement: 20,
     init: function() {
     	// Variables
 		this.set('grids', this.get('level.grids'));

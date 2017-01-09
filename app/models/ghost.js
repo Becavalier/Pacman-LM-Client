@@ -5,6 +5,11 @@ import Movement from '../mixins/movement';
 
 export default Ember.Object.extend(SharedStuff, Movement, {
 	direction: 'stopped',
+	// The movement speed of ghost
+	framesPerMovement: 30,
+	init: function() {
+		this.set('grids', this.get('level.grids'));
+	},
 	draw: function() {
 		let x             = this.get('x');
 		let y             = this.get('y');
@@ -18,8 +23,8 @@ export default Ember.Object.extend(SharedStuff, Movement, {
 	  	let directionWeights = directions.map(direction => {
 	    	return this.chanceOfPacmanIfInDirection(direction);
 	  	});
-
 	  	let bestDirection = this.getRandomItem(directions, directionWeights);
+
 	  	this.set('direction', bestDirection);
 	},
 
@@ -28,24 +33,24 @@ export default Ember.Object.extend(SharedStuff, Movement, {
 	    	return 0;
 	  	} else {
 	    	let chances = ((this.get('pac.y') - this.get('y')) * this.get(`directions.${direction}.y`)) +
-	                  ((this.get('pac.x') - this.get('x')) * this.get(`directions.${direction}.x`))
-	    	return Math.max(chances, 0) + 0.2
+	                  ((this.get('pac.x') - this.get('x')) * this.get(`directions.${direction}.x`));
+	    	return Math.max(chances, 0) + 0.2;
 	  	}
 	},
 
 	getRandomItem: function(list, weight) {
-	  	var total_weight = weight.reduce(function (prev, cur, i, arr) {
+	  	var totalWeight = weight.reduce(function (prev, cur, i, arr) {
 	      	return prev + cur;
 	  	});
 
-	  	var random_num = Math.random() * total_weight;
-	  	var weight_sum = 0;
+	  	var randomNum = Math.random() * totalWeight;
+	  	var weightSum = 0;
 
 	  	for (var i = 0; i < list.length; i++) {
-	      	weight_sum += weight[i];
-	      	weight_sum = Number(weight_sum.toFixed(2));
+	      	weightSum += weight[i];
+	      	weightSum = Number(weightSum.toFixed(2));
 
-	      	if (random_num < weight_sum) {
+	      	if (randomNum < weightSum) {
 	          	return list[i];
 	      	}
 	  	}
