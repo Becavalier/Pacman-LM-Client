@@ -205,8 +205,13 @@ export default Ember.Object.extend({
 		// Repaint the rest area
 		for(let i = 0; i < maps.length; i++) {
 			for(let j = 0; j < maps[i].length; j++) {
-				if(maps[i][j] === 2)
+				if(maps[i][j] === 2) {
 					maps[i][j] = 1;
+				}
+
+				if(maps[i][j] === 0) {
+					maps[i][j] = 2;
+				}
 			}
 		} 
 

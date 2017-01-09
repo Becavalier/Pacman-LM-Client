@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import $ from 'jquery';
 
 import SharedStuff from '../mixins/shared-stuff';
 import Movement from '../mixins/movement';
@@ -21,7 +22,7 @@ export default Ember.Object.extend(SharedStuff, Movement, {
 	   let x = this.get('x');
 	   let y = this.get('y');
 	   let radiusDivisor = 2;
-	   this.drawCircle(x, y, this.get('squareSize'), radiusDivisor, this.get('direction'), '#5F5');
+	   this.drawCircle(x, y, this.get('squareSize'), radiusDivisor, this.get('direction'), '#17f300');
 	},
 
 	changeDirection: function() {
@@ -47,7 +48,9 @@ export default Ember.Object.extend(SharedStuff, Movement, {
 		      	this.incrementProperty('scoreboard.levelNumber');
 		      	this.set('intent', 'stopped');
 
-		      	roundOverCallback && roundOverCallback();
+		      	if($.type(roundOverCallback) === "function") {
+		      		roundOverCallback.call(this);
+		      	}
 		    }
 	    }
 	},

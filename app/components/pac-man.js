@@ -23,7 +23,9 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 
     init: function() {
     	this._super();
-    	this.set('level', Level.create());
+    	this.set('level', Level.create({
+    		mazeScale: 10
+    	}));
     	this.get('level').initGrids();
 
     	this.set('pac', Pac.create({
