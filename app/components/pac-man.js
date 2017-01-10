@@ -63,8 +63,8 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 
 	  	this.get('level').clearScreen();
 	  	this.get('level').drawGrid();
-	  	this.get('pac').draw();
 	  	this.get('ghost').draw();
+	  	this.get('pac').draw();
 
 	  	Ember.run.later(this, this.loop, 1000/60);
 	},
@@ -75,6 +75,7 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 	},
 
   	keyboardShortcuts: {
+  		// Pac direction control
 	    up: function() {
 	    	this.set('pac.intent', 'up');
 	    },
@@ -86,7 +87,12 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedStuff, {
 	    },
 	    right: function() {
 	    	this.set('pac.intent', 'right');
-	    }
+	    },
+	    // Pac ability control
+	    s: function() {
+	    	this.get('pac').abilitySpeedUp();
+	    },
+	    space: function() {}
 	},
 
 });

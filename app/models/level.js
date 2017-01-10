@@ -85,13 +85,13 @@ export default Ember.Object.extend(SharedStuff, {
 
 	drawPellet: function(x, y) {
 	   let radiusDivisor = 6;
-	   this.drawCircle(x, y, this.get('squareSize'), radiusDivisor, 'stopped', '#616161');
+	   this.drawCircle(x, y, this.get('squareSize'), radiusDivisor, 'stopped', '#888');
 	},
 
 	drawWalls: function(x, y) {
 	    let squareSize = this.get('squareSize');
 	    let ctx = this.get('ctx');
-	    ctx.fillStyle = '#000';
+	    ctx.fillStyle = '#444';
 		ctx.fillRect(x * squareSize,
                  	 y * squareSize,
                      squareSize,
@@ -100,7 +100,7 @@ export default Ember.Object.extend(SharedStuff, {
 
 	drawGrid: function() {
 	    let ctx = this.get('ctx');
-	    ctx.fillStyle = '#000';
+	    ctx.fillStyle = '#444';
 
 	    let grids = this.get('grids');
 	    grids.forEach((grid, gridIndex) => {
