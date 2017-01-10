@@ -2,7 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('pac-man', 'Integration | Component | pac man', {
-  integration: true
+  integration: false
 });
 
 test('it renders', function(assert) {
